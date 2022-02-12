@@ -78,11 +78,11 @@ tweet_1 <- paste0("Last week in Madison (",
                 " people in our city. #VisionZero #StopTrafficViolence")
 
 
-tweet_2 <- paste0("Of those killed and injured last week, ",
-                  tot_inj_ped_wk,
-                  " were pedestrians and ",
-                  tot_inj_bik_wk,
-                  " were riding a bike. The crashes happened here.")
+# tweet_2 <- paste0("Of those killed and injured last week, ",
+#                   tot_inj_ped_wk,
+#                   " were pedestrians and ",
+#                   tot_inj_bik_wk,
+#                   " were riding a bike. The crashes happened here.")
 
 # create image to go with tweet. Recommended size: 1200px X 675px
 background <- image_read("madison_1200.png")
