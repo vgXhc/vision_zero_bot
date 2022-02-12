@@ -109,8 +109,8 @@ tweet_1_img <- image_annotate(background,
                color = "black")
 
 image_write(tweet_1_img, 
-            path = "output/tweet_1_img.png")
+            path = "tweet_1_img.png")
 
 post_tweet(status = tweet_1, 
-           media = "output/tweet_1_img.png")
+           media = "tweet_1_img.png")
 
