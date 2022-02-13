@@ -18,8 +18,8 @@ create_token(
 
 download.file("https://CommunityMaps.wi.gov/crash/public/crashesKML.do?filetype=json&startyear=2022&injsvr=K&injsvr=A&county=dane", "crashes.json")
 df <- st_read("crashes.json")
-print(df)
-print(getwd())
+
+
 
 # set up time intervals
 d <- today()
@@ -114,5 +114,5 @@ image_write(tweet_1_img,
             path = "tweet_1_img.png")
 
 post_tweet(status = tweet_1, 
-           media = "tweet_1_img.png")
+           media = "madison_1200.png")
 
