@@ -5,6 +5,8 @@ library(lubridate)
 library(jsonlite)
 library(magick)
 
+print(Sys.getenv("TWITTER_CONSUMER_API_KEY"))
+
 vzbot_token <-create_token(
   app = "vision_zero_bot",  # the name of the Twitter app
   consumer_key = Sys.getenv("TWITTER_CONSUMER_API_KEY"),
