@@ -113,6 +113,10 @@ tweet_1_img <- image_annotate(background,
 image_write(tweet_1_img, 
             path = "tweet_1_img.png")
 
+# Download the image to a temporary location
+temp_file <- tempfile()
+download.file("https://haraldkliems.netlify.app/posts/do-crashes-have-a-history/img/montreal_map.png", temp_file)
+
 post_tweet(status = tweet_1, 
-           media = "madison_1200.png")
+           media = temp_file)
 
