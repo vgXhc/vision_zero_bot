@@ -5,7 +5,7 @@ library(lubridate)
 library(jsonlite)
 library(magick)
 
-create_token(
+vzbot_token <-create_token(
   app = "vision_zero_bot",  # the name of the Twitter app
   consumer_key = Sys.getenv("TWITTER_CONSUMER_API_KEY"),
   consumer_secret = Sys.getenv("TWITTER_CONSUMER_API_SECRET"),
@@ -13,7 +13,8 @@ create_token(
   access_secret = Sys.getenv("TWITTER_ACCESS_TOKEN_SECRET")
 )
 
-post_tweet("test")
+post_tweet("test",
+           token = vzbot_token)
 
 
 # download.file("https://CommunityMaps.wi.gov/crash/public/crashesKML.do?filetype=json&startyear=2022&injsvr=K&injsvr=A&county=dane", "crashes.json")
