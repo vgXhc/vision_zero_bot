@@ -2,7 +2,7 @@ name: visionzerobot
 
 on:
   schedule:
-    - cron: '30 00 * * Mon'
+    - cron: '45 00 * * Mon'
 
 
 jobs:
