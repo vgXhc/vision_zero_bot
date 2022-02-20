@@ -1,7 +1,9 @@
 # vision_zero_bot
 A Twitter bot to automatically send out Vision-Zero-related tweets for Madison, using R and GitHub actions.
 
-The instructions [here](https://www.rostrum.blog/2020/09/21/londonmapbot/) were very helpful in figuring this out.
+The instructions [here](https://www.rostrum.blog/2020/09/21/londonmapbot/) were very helpful in figuring this out. 
+
+For more details, see my [blog post](https://haraldkliems.netlify.app/posts/a-vision-zero-twitter-bot-for-madison/) about the bot.
 
 ## Current status
 The bot is in production status, tweeting a summary tweet once a week on Wednesdays.
@@ -19,4 +21,4 @@ Once a week, triggered by a cron job via Github actions, injury and fatality dat
   - [ ] Could also be a map
 - [ ] tweet other Vision Zero related messages?
 - [ ] automatically retweet tweets located in Madison and tagged #VisionZero?
-If you have suggestions for a feature, create an issue in the repository!
+If you have suggestions for a feature, create an [issue in the repository](https://github.com/vgXhc/vision_zero_bot/issues)!
