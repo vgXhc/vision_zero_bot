@@ -92,7 +92,7 @@ p <- crashes_hist_by_mo %>%
   theme(legend.position = "none",
         axis.text.y = element_blank())
 
-ggsave("monthly_comparison.png", p, width = 1200, height = 675, units = "px", scale = 2 )
+ggsave("monthly_comparison.png", p, width = 1200, height = 675, units = "px", scale = 2, bg = 'white' )
 
 tweet <- paste0(
   "#VisionZero monthly recap for ",
