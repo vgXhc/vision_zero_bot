@@ -115,7 +115,7 @@ tweet <- paste0(
 
 
 
-post_tweet(status = tweet_1,
+post_tweet(status = tweet,
            media = "monthly_comparison.png")
 #           media_alt_text = alt_text)
 

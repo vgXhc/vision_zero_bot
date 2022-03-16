@@ -1,4 +1,4 @@
-name: visionzerobot
+name: visionzerobotmonthly
 
 on:
   schedule:
