@@ -4,7 +4,6 @@ library(sf)
 library(lubridate)
 library(jsonlite)
 library(magick)
-library(gghighlight)
 library(toOrdinal)
 
 
