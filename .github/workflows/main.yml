@@ -3,6 +3,7 @@ name: visionzerobot
 on:
   schedule:
     - cron: '33 17 * * Wed'
+  workflow_dispatch:
 
 
 jobs:

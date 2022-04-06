@@ -4,6 +4,8 @@ library(sf)
 library(lubridate)
 library(jsonlite)
 library(magick)
+library(gghighlight)
+library(toOrdinal)
 
 
 vzbot_token <-create_token(
@@ -15,11 +17,16 @@ vzbot_token <-create_token(
 )
 
 
-
+# download 2022 crash data
 download.file("https://CommunityMaps.wi.gov/crash/public/crashesKML.do?filetype=json&startyear=2022&injsvr=K&injsvr=A&county=dane", "crashes.json")
 df <- st_read("crashes.json")
 
-
+# download historic crash data and save it locally
+# download.file("https://CommunityMaps.wi.gov/crash/public/crashesKML.do?filetype=json&startyear=2017&injsvr=K&injsvr=A&county=dane", "crashes_hist.json")
+# df_hist <- st_read("crashes_hist.json")
+# file.remove("crashes_hist.json")
+# saveRDS(df_hist, "crashes_hist.RDS")
+df_hist <- readRDS("crashes_hist.RDS")
 
 # set up time intervals
 d <- today()
@@ -66,7 +73,23 @@ tot_inj_yr <- crashes %>%
   summarise(sum(totinj)) %>%
   pull()
 
+# historic numbers
+crashes_hist <- df_hist %>%
+  filter(muniname == "MADISON") %>% 
+  mutate(date = mdy(date),
+         totfatl = as.numeric(totfatl),
+         totinj = as.numeric(totinj),
+         year = year(date),
+         month = month(date, label = T)) %>%
+  st_drop_geometry()
 
+ 
+last_month <- month(floor_date(d, unit = "month") -1, label = T, abbr = T)
+last_month_long <- month(floor_date(d, unit = "month") -1, label = T, abbr = F)
+
+
+
+# create tweet body
 tweet_1 <- paste0("Last week in Madison (",
                   last_week_formatted,
                   "), there were ",
@@ -78,6 +101,8 @@ tweet_1 <- paste0("Last week in Madison (",
                 " people and seriously injured ",
                 tot_inj_yr,
                 " people in our city. #VisionZero #StopTrafficViolence")
+
+disclaimer_tweet <- "Note that there can be delays in crash reporting and weekly numbers are preliminary. Data: CommunityMaps/WI Traffic Operations and Safety Laboratory. https://communitymaps.wi.gov/"
 
 
 # tweet_2 <- paste0("Of those killed and injured last week, ",
@@ -119,4 +144,16 @@ image_write(tweet_1_img,
 
 post_tweet(status = tweet_1,
            media = "tweet_1_img.png")
+
+# prepare disclaimer tweet
+## lookup status_id
+my_timeline <- get_timeline(rtweet:::home_user())
+
+## ID for reply
+reply_id <- my_timeline$status_id[1]
+
+## post reply
+post_tweet(status = disclaimer_tweet,
+           in_reply_to_status_id = reply_id)
+
 
