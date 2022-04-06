@@ -32,9 +32,9 @@ d <- today()
 last_week <- interval(start = floor_date(d, unit = "week")-8, end = floor_date(d, unit = "week")-1)
 
 # formatted date for output in tweet
-last_week_formatted <- paste0(format(last_week@start, "%d/%m"),
+last_week_formatted <- paste0(format(last_week@start, "%m/%d"),
                          "-",
-                         format(floor_date(d, unit = "week")-1, "%d/%m"))
+                         format(floor_date(d, unit = "week")-1, "%m/%d"))
 
 
 crashes <- df %>%
