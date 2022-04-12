@@ -19,11 +19,10 @@ download.file("https://CommunityMaps.wi.gov/crash/public/crashesKML.do?filetype=
 df <- st_read("crashes.json")
 
 # download historic crash data and save it locally
-# download.file("https://CommunityMaps.wi.gov/crash/public/crashesKML.do?filetype=json&startyear=2017&injsvr=K&injsvr=A&county=dane", "crashes_hist.json")
-# df_hist <- st_read("crashes_hist.json")
-# file.remove("crashes_hist.json")
-# saveRDS(df_hist, "crashes_hist.RDS")
-df_hist <- readRDS("crashes_hist.RDS")
+# 
+download.file("https://CommunityMaps.wi.gov/crash/public/crashesKML.do?filetype=json&startyear=2017&injsvr=K&injsvr=A&county=dane", "crashes_hist.json")
+df_hist <- st_read("crashes_hist.json")
+
 
 # set up time intervals
 d <- today()
