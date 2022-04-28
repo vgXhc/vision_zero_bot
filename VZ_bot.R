@@ -1,4 +1,4 @@
-library(tidyverse)
+library(dplyr)
 library(rtweet)
 library(sf)
 library(lubridate)
