@@ -1,9 +1,11 @@
 library(dplyr)
+library(tibble)
 library(rtweet)
 library(sf)
 library(lubridate)
 library(jsonlite)
 library(magick)
+
 
 
 vzbot_token <-create_token(
