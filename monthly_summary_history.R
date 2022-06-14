@@ -61,16 +61,22 @@ ranked <- crashes_hist_by_mo %>%
   pull(tot_fat_inj_mo)
 crashes_last_mo <- tail(ranked, 1)
 rank_mo <- tail(rank(-ranked), n = 1)
-rank_mo_str <- ifelse(rank_mo == 1, "", toOrdinal(rank_mo))
+if (rank_mo == 1){
+  rank_mo_str <- "highest"
+  } else if (rank_mo == length(ranked)) {
+    rank_mo_str <- "lowest"
+  } else{
+    rank_mo_str <- paste0(toOrdinal(rank_mo), " highest")
+  }
+
 title_month <- paste0("Fatal and serious traffic injuries in Madison in ", last_month_long, ", 2017-2022")
 subtitle_month <- paste0("With ", 
                          crashes_last_mo, 
                          " fatalities and serious injuries, this year's ", 
                          last_month_long ,
-                         " was the ",
+                         " had the ",
                          rank_mo_str,
-                         " worst ",
-                         "since 2017."
+                         " numbers since 2017."
 )
 
 p <- crashes_hist_by_mo %>% 
@@ -100,14 +106,14 @@ tweet <- paste0(
   crashes_last_mo,
   " fatalities and serious injuries, this year's ",
   last_month_long ,
-  " was the ",
+  " had the ",
   rank_mo_str,
-  " worst in the years 2017-2022. #StopTrafficViolence"
+  " number of fatalities/serious injuries since 2017. #StopTrafficViolence"
 )
 
 # alt text requires development version of rtweet
 # alt_text <- paste0(
-#   "A bar graph faceted by month, showing the number of fatatlies and serious traffic injuries in Madison between 2017 and 2018. The past month is highlighted."
+#   "A bar graph faceted by month, showing the number of fatalities and serious traffic injuries in Madison between 2017 and 2018. The past month is highlighted."
 # )
 
 
