@@ -8,10 +8,10 @@ library(magick)
 
 
 
-vzbot_token <-create_token(
-  app = "vision_zero_bot",  # the name of the Twitter app
-  consumer_key = Sys.getenv("TWITTER_CONSUMER_API_KEY"),
-  consumer_secret = Sys.getenv("TWITTER_CONSUMER_API_SECRET"),
+vzbot_token <- rtweet_bot(
+  #app = "vision_zero_bot",  # the name of the Twitter app
+  api_key = Sys.getenv("TWITTER_CONSUMER_API_KEY"),
+  api_secret = Sys.getenv("TWITTER_CONSUMER_API_SECRET"),
   access_token = Sys.getenv("TWITTER_ACCESS_TOKEN"),
   access_secret = Sys.getenv("TWITTER_ACCESS_TOKEN_SECRET")
 )
@@ -143,7 +143,9 @@ image_write(tweet_1_img,
 # download.file("https://haraldkliems.netlify.app/posts/do-crashes-have-a-history/img/montreal_map.png", temp_file)
 
 post_tweet(status = tweet_1,
-           media = "tweet_1_img.png")
+           media = "tweet_1_img.png",
+           media_alt_text = paste0("Image of the Wisconsin State Capitol, with overlaid text: ", image_text),
+           token = vzbot_token)
 
 # prepare disclaimer tweet
 ## lookup status_id
