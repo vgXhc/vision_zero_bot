@@ -16,6 +16,8 @@ vzbot_token <- rtweet_bot(
   access_secret = Sys.getenv("TWITTER_ACCESS_TOKEN_SECRET")
 )
 
+auth_as(vzbot_token)
+
 
 # download 2022 crash data
 download.file("https://CommunityMaps.wi.gov/crash/public/crashesKML.do?filetype=json&startyear=2022&injsvr=K&injsvr=A&county=dane", "crashes.json")
