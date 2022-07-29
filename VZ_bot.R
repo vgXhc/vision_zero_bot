@@ -146,10 +146,10 @@ post_tweet(status = tweet_1,
            media = "tweet_1_img.png",
            media_alt_text = paste0("Image of the Wisconsin State Capitol, with overlaid text: ", image_text),
            token = vzbot_token)
-
+rtweet_user(vzbot_token)
 # prepare disclaimer tweet
 ## lookup status_id
-my_timeline <- get_timeline(rtweet:::home_user())
+my_timeline <- get_my_timeline()
 
 ## ID for reply
 reply_id <- my_timeline$status_id[1]
