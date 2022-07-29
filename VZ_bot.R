@@ -149,7 +149,7 @@ post_tweet(status = tweet_1,
 
 # prepare disclaimer tweet
 ## lookup status_id
-my_timeline <- get_timeline(rtweet:::home_user())
+my_timeline <- get_my_timeline()
 
 ## ID for reply
 reply_id <- my_timeline$status_id[1]
