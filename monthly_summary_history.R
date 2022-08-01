@@ -5,14 +5,15 @@ library(toOrdinal)
 library(lubridate)
 library(sf)
 
-vzbot_token <-create_token(
-  app = "vision_zero_bot",  # the name of the Twitter app
-  consumer_key = Sys.getenv("TWITTER_CONSUMER_API_KEY"),
-  consumer_secret = Sys.getenv("TWITTER_CONSUMER_API_SECRET"),
+vzbot_token <- rtweet_bot(
+  #app = "vision_zero_bot",  # the name of the Twitter app
+  api_key = Sys.getenv("TWITTER_CONSUMER_API_KEY"),
+  api_secret = Sys.getenv("TWITTER_CONSUMER_API_SECRET"),
   access_token = Sys.getenv("TWITTER_ACCESS_TOKEN"),
   access_secret = Sys.getenv("TWITTER_ACCESS_TOKEN_SECRET")
 )
 
+auth_as(vzbot_token)
 
 # download 2022 crash data
 download.file("https://CommunityMaps.wi.gov/crash/public/crashesKML.do?filetype=json&startyear=2022&injsvr=K&injsvr=A&county=dane", "crashes.json")
@@ -111,16 +112,13 @@ tweet <- paste0(
   " number of fatalities/serious injuries since 2017. #StopTrafficViolence"
 )
 
-# alt text requires development version of rtweet
-# alt_text <- paste0(
-#   "A bar graph faceted by month, showing the number of fatalities and serious traffic injuries in Madison between 2017 and 2018. The past month is highlighted."
-# )
-
-
-
+# alt text for tweet
+alt_text <- paste0(
+  "A bar graph faceted by month, showing the number of fatalities and serious traffic injuries in Madison between 2017 and 2018. The past month is highlighted."
+)
 
 
 post_tweet(status = tweet,
-           media = "monthly_comparison.png")
-#           media_alt_text = alt_text)
+           media = "monthly_comparison.png",
+           media_alt_text = alt_text)
 
