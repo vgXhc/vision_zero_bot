@@ -61,10 +61,10 @@ ranked <- crashes_hist_by_mo %>%
   filter(month == last_month) %>% 
   pull(tot_fat_inj_mo)
 crashes_last_mo <- tail(ranked, 1)
-rank_mo <- tail(rank(-ranked), n = 1)
+rank_mo <- tail(rank(-round(ranked)), n = 1)
 if (rank_mo == 1){
   rank_mo_str <- "highest"
-  } else if (rank_mo == length(ranked)) {
+  } else if (rank_mo == length(ranked) | round(rank_mo)) {
     rank_mo_str <- "lowest"
   } else{
     rank_mo_str <- paste0(toOrdinal(rank_mo), " highest")
