@@ -64,7 +64,7 @@ crashes_last_mo <- tail(ranked, 1)
 rank_mo <- tail(rank(-round(ranked)), n = 1)
 if (rank_mo == 1){
   rank_mo_str <- "highest"
-  } else if (rank_mo == length(ranked) | round(rank_mo)) {
+  } else if (rank_mo == length(ranked)) {
     rank_mo_str <- "lowest"
   } else{
     rank_mo_str <- paste0(toOrdinal(rank_mo), " highest")
