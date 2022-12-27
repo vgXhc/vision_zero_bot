@@ -7,7 +7,14 @@ library(jsonlite)
 library(magick)
 
 # read token from Github Actions environment
-token <- Sys.getenv("RTOOT_DEFAULT_TOKEN")
+token <- structure(
+  list(
+    bearer = Sys.getenv("RTOOT_DEFAULT_TOKEN"),
+    type = "user",
+    instance = "botsin.space"
+  ),
+  class = "rtoot_bearer"
+)
 
 
 # download current year crash data
