@@ -1,19 +1,20 @@
 library(tidyverse)
-library(rtweet)
+library(rtoot)
 library(gghighlight)
 library(toOrdinal)
 library(lubridate)
 library(sf)
 
-vzbot_token <- rtweet_bot(
-  #app = "vision_zero_bot",  # the name of the Twitter app
-  api_key = Sys.getenv("TWITTER_CONSUMER_API_KEY"),
-  api_secret = Sys.getenv("TWITTER_CONSUMER_API_SECRET"),
-  access_token = Sys.getenv("TWITTER_ACCESS_TOKEN"),
-  access_secret = Sys.getenv("TWITTER_ACCESS_TOKEN_SECRET")
+# read token from Github Actions environment
+token <- structure(
+  list(
+    bearer = Sys.getenv("RTOOT_DEFAULT_TOKEN"),
+    type = "user",
+    instance = "botsin.space"
+  ),
+  class = "rtoot_bearer"
 )
 
-auth_as(vzbot_token)
 
 # download 2022 crash data
 download.file("https://CommunityMaps.wi.gov/crash/public/crashesKML.do?filetype=json&startyear=2022&injsvr=K&injsvr=A&county=dane", "crashes.json")
@@ -100,7 +101,7 @@ p <- crashes_hist_by_mo %>%
 
 ggsave("monthly_comparison.png", p, width = 1200, height = 675, units = "px", scale = 2, bg = 'white' )
 
-tweet <- paste0(
+toot <- paste0(
   "#VisionZero monthly recap for ",
   last_month_long,
   " in #MadisonWI: With ",
@@ -118,7 +119,12 @@ alt_text <- paste0(
 )
 
 
-post_tweet(status = tweet,
-           media = "monthly_comparison.png",
-           media_alt_text = alt_text)
+# post a media file with alt text
+post_toot(toot,
+          media = "monthly_comparison.png",
+          alt_text = alt_text, 
+          visibility = "private",
+          language = "EN",
+          token = token
+)
 

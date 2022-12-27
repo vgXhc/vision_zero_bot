@@ -1,34 +1,29 @@
 library(dplyr)
 library(tibble)
-library(rtweet)
+library(rtoot)
 library(sf)
 library(lubridate)
 library(jsonlite)
 library(magick)
 
-
-
-vzbot_token <- rtweet_bot(
-  #app = "vision_zero_bot",  # the name of the Twitter app
-  api_key = Sys.getenv("TWITTER_CONSUMER_API_KEY"),
-  api_secret = Sys.getenv("TWITTER_CONSUMER_API_SECRET"),
-  access_token = Sys.getenv("TWITTER_ACCESS_TOKEN"),
-  access_secret = Sys.getenv("TWITTER_ACCESS_TOKEN_SECRET")
+# read token from Github Actions environment
+token <- structure(
+  list(
+    bearer = Sys.getenv("RTOOT_DEFAULT_TOKEN"),
+    type = "user",
+    instance = "botsin.space"
+  ),
+  class = "rtoot_bearer"
 )
 
-auth_as(vzbot_token)
 
-
-# download 2022 crash data
-download.file("https://CommunityMaps.wi.gov/crash/public/crashesKML.do?filetype=json&startyear=2022&injsvr=K&injsvr=A&county=dane", "crashes.json")
+# download current year crash data
+this_year = year(Sys.Date())
+dl_path = paste0("https://CommunityMaps.wi.gov/crash/public/crashesKML.do?filetype=json&startyear=",
+                 this_year,
+                 "&injsvr=K&injsvr=A&county=dane")
+download.file(dl_path, "crashes.json")
 df <- st_read("crashes.json")
-
-# download historic crash data and save it locally
-# download.file("https://CommunityMaps.wi.gov/crash/public/crashesKML.do?filetype=json&startyear=2017&injsvr=K&injsvr=A&county=dane", "crashes_hist.json")
-# df_hist <- st_read("crashes_hist.json")
-# file.remove("crashes_hist.json")
-# saveRDS(df_hist, "crashes_hist.RDS")
-df_hist <- readRDS("crashes_hist.RDS")
 
 # set up time intervals
 d <- today()
@@ -75,43 +70,23 @@ tot_inj_yr <- crashes %>%
   summarise(sum(totinj)) %>%
   pull()
 
-# historic numbers
-crashes_hist <- df_hist %>%
-  filter(muniname == "MADISON") %>% 
-  mutate(date = mdy(date),
-         totfatl = as.numeric(totfatl),
-         totinj = as.numeric(totinj),
-         year = year(date),
-         month = month(date, label = T)) %>%
-  st_drop_geometry()
-
- 
-last_month <- month(floor_date(d, unit = "month") -1, label = T, abbr = T)
-last_month_long <- month(floor_date(d, unit = "month") -1, label = T, abbr = F)
-
-
-
+disclaimer <- "* There can be delays in crash reporting, and weekly numbers are preliminary. Data: CommunityMaps/WI Traffic Operations and Safety Laboratory. https://communitymaps.wi.gov/"
 # create tweet body
-tweet_1 <- paste0("Last week in Madison (",
+toot_1 <- paste0("Last week in #MadisonWI (",
                   last_week_formatted,
                   "), there were ",
                 tot_fat_wk,
                 " traffic fatalities and ",
                 tot_inj_wk,
-                " serious injuries. Since the beginning of the year, traffic violence has killed ",
+                " serious injuries.* Since the beginning of the year, traffic violence has killed ",
                 tot_fat_yr,
                 " people and seriously injured ",
                 tot_inj_yr,
-                " people in our city. #VisionZero #StopTrafficViolence")
+                " people in our city. #VisionZero #StopTrafficViolence\n\n",
+                disclaimer)
 
-disclaimer_tweet <- "Note that there can be delays in crash reporting and weekly numbers are preliminary. Data: CommunityMaps/WI Traffic Operations and Safety Laboratory. https://communitymaps.wi.gov/"
 
 
-# tweet_2 <- paste0("Of those killed and injured last week, ",
-#                   tot_inj_ped_wk,
-#                   " were pedestrians and ",
-#                   tot_inj_bik_wk,
-#                   " were riding a bike. The crashes happened here.")
 
 # create image to go with tweet. Recommended size: 1200px X 675px
 background <- image_read("madison_1200.png")
@@ -127,9 +102,7 @@ image_text <- paste0("Vision Zero update ",
                      "\n Year-to-date serious injuries:",
                      tot_inj_yr)
 
-
-
-tweet_1_img <- image_annotate(background,
+toot_1_img <- image_annotate(background,
                image_text,
                size = 60,
                font = "sans",
@@ -137,27 +110,22 @@ tweet_1_img <- image_annotate(background,
                gravity = "center",
                color = "black")
 
-image_write(tweet_1_img,
-            path = "tweet_1_img.png")
+image_write(toot_1_img,
+            path = "toot_1_img.png")
 
 # # Download the image to a temporary location
 # temp_file <- tempfile()
 # download.file("https://haraldkliems.netlify.app/posts/do-crashes-have-a-history/img/montreal_map.png", temp_file)
 
-post_tweet(status = tweet_1,
-           media = "tweet_1_img.png",
-           media_alt_text = paste0("Image of the Wisconsin State Capitol, with overlaid text: ", image_text),
-           token = vzbot_token)
 
-# prepare disclaimer tweet
-## lookup status_id
-my_timeline <- get_my_timeline()
+# post a media file with alt text
+post_toot(toot_1,
+          media = "toot_1_img.png",
+          alt_text = paste0("Image of the Wisconsin State Capitol, with overlaid text: ", image_text), 
+          visibility = "public",
+          language = "EN",
+          token = token
+          )
 
-## ID for reply
-reply_id <- my_timeline$id[1]
-
-## post reply
-post_tweet(status = disclaimer_tweet,
-           in_reply_to_status_id = reply_id)
 
 
