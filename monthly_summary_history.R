@@ -123,7 +123,7 @@ alt_text <- paste0(
 post_toot(toot,
           media = "monthly_comparison.png",
           alt_text = alt_text, 
-          visibility = "private",
+          visibility = "public",
           language = "EN",
           token = token
 )
