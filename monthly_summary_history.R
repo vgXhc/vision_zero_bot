@@ -51,7 +51,7 @@ ranked <- crashes_hist_by_mo %>%
   filter(month == last_month) %>% 
   pull(tot_fat_inj_mo)
 crashes_last_mo <- tail(ranked, 1)
-rank_mo <- tail(rank(-round(ranked)), n = 1)
+rank_mo <- tail(floor(rank(-ranked)), n = 1) #rounds downs in case of tied months
 if (rank_mo == 1){
   rank_mo_str <- "highest"
   } else if (rank_mo == length(ranked)) {
@@ -112,7 +112,7 @@ alt_text <- paste0(
 post_toot(toot,
           media = "monthly_comparison.png",
           alt_text = alt_text, 
-          visibility = "private",
+          visibility = "public",
           language = "EN",
           token = token
 )
