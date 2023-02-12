@@ -16,10 +16,6 @@ token <- structure(
 )
 
 
-# download 2022 crash data
-download.file("https://CommunityMaps.wi.gov/crash/public/crashesKML.do?filetype=json&startyear=2022&injsvr=K&injsvr=A&county=dane", "crashes.json")
-df <- st_read("crashes.json")
-
 # download historic crash data and save it locally
 # 
 download.file("https://CommunityMaps.wi.gov/crash/public/crashesKML.do?filetype=json&startyear=2017&injsvr=K&injsvr=A&county=dane", "crashes_hist.json")
@@ -28,13 +24,6 @@ df_hist <- st_read("crashes_hist.json")
 
 # set up time intervals
 d <- today()
-
-crashes <- df %>%
-  mutate(date = mdy(date),
-         totfatl = as.numeric(totfatl),
-         totinj = as.numeric(totinj)) %>%
-  st_drop_geometry() %>% 
-  filter(muniname == "MADISON")
 
 # historic numbers
 crashes_hist <- df_hist %>%
@@ -71,7 +60,7 @@ if (rank_mo == 1){
     rank_mo_str <- paste0(toOrdinal(rank_mo), " highest")
   }
 
-title_month <- paste0("Fatal and serious traffic injuries in Madison in ", last_month_long, ", 2017-2022")
+title_month <- paste0("Fatal and serious traffic injuries in Madison in ", last_month_long, ", 2017-", year(today()))
 subtitle_month <- paste0("With ", 
                          crashes_last_mo, 
                          " fatalities and serious injuries, this year's ", 
