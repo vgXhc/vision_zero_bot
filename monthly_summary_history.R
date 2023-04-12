@@ -104,7 +104,9 @@ toot <- paste0(
 
 # alt text for tweet
 alt_text <- paste0(
-  "A bar graph faceted by month, showing the number of fatalities and serious traffic injuries in Madison between 2017 and 2018. The past month is highlighted."
+  "A bar graph faceted by month, showing the number of fatalities and serious traffic injuries in Madison between 2017 and ", 
+  max(crashes_hist_by_mo$year), 
+  ". The past month is highlighted."
 )
 
 
