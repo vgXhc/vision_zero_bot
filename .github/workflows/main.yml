@@ -8,7 +8,7 @@ on:
 
 jobs:
   visionzerobot-post:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     env:
       RTOOT_DEFAULT_TOKEN: ${{ secrets.RTOOT_DEFAULT_TOKEN }}
       
