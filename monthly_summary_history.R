@@ -10,7 +10,7 @@ token <- structure(
   list(
     bearer = Sys.getenv("RTOOT_DEFAULT_TOKEN"),
     type = "user",
-    instance = "botsin.space"
+    instance = "urbanists.social"
   ),
   class = "rtoot_bearer"
 )
